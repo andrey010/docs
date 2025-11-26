@@ -1,94 +1,179 @@
 ---
 title: 'Development'
-description: 'Preview changes locally to update your docs'
+description: 'Paylora API integrations to your backend via webhooks and UI using API-key'
 ---
 
-<Info>
-  **Prerequisites**:
-  - Node.js version 19 or higher
-  - A docs repository with a `docs.json` file
-</Info>
 
-Follow these steps to install and run Mintlify on your operating system.
+## API integration into web app
+Follow these steps to integrate Paylora API into your web app.
 
 <Steps>
-<Step title="Install the Mintlify CLI">
-
-```bash
-npm i -g mint
-```
-</Step>
-
-<Step title="Preview locally">
-
-Navigate to your docs directory where your `docs.json` file is located, and run the following command:
-
-```bash
-mint dev
-```
-
-A local preview of your documentation will be available at `http://localhost:3000`.
-
-</Step>
-</Steps>
-
-## Custom ports
-
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. For example, to run Mintlify on port 3333, use this command:
-
-```bash
-mint dev --port 3333
-```
-
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
-
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
-
-## Mintlify versions
-
-Please note that each CLI release is associated with a specific version of Mintlify. If your local preview does not align with the production version, please update the CLI:
-
-```bash
-npm mint update
-```
-
-## Validating links
-
-The CLI can assist with validating links in your documentation. To identify any broken links, use the following command:
-
-```bash
-mint broken-links
-```
-
-## Deployment
-
-If the deployment is successful, you should see the following:
-
+<Step title="Generate API key">
+Click `Generate New Key`, and put url address of your website into field than click save
 <Frame>
-  <img src="/images/checks-passed.png" alt="Screenshot of a deployment confirmation message that says All checks have passed." style={{ borderRadius: '0.5rem' }} />
+  <img src="/images/api_key.png" alt="Screenshot of a api key creation page" style={{ borderRadius: '0.5rem' }} />
 </Frame>
 
-## Code formatting
+</Step>
 
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
+<Step title="Integrate invoice api into your web app">
+Use [create invoice endpoint](api-reference/invoice/create-invoice) to add this as your button handler
 
-## Troubleshooting
+For get token list use [get tokens endpoint](api-reference/token/get-a-list-of-tokens)
 
-<AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
+Network type is
 
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of the CLI: `npm remove -g mint`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall the CLI: `npm i -g mint`
-  </Accordion>
+```typescript
+export enum NetworkType {
+  ARB_SEPOLIA = 'ARB_SEPOLIA',
+  ETH_SEPOLIA = 'ETH_SEPOLIA',
+  BASE_SEPOLIA = 'BASE_SEPOLIA'
+}
+```
 
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the `~/.mintlify` folder. Then run `mint dev` again.
-  </Accordion>
-</AccordionGroup>
+React.js sample
+```typescript
+export default function CreateInvoice(props) {
+  const { amount, token_address, network } = props
 
-Curious about what changed in the latest CLI version? Check out the [CLI changelog](https://www.npmjs.com/package/mintlify?activeTab=versions).
+  const createInvoice = async () => {
+    const res = await fetch("https://api.paylora.org/api/v1/invoice/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount,
+        token_address,
+        network,
+      }),
+    });
+
+    const data = await res.json();
+
+    // redirect user to checkout
+    window.open(data.url, '_blank');
+  };
+
+  return (
+    <button onClick={createInvoice}>
+      Pay
+    </button>
+  );
+}
+
+```
+
+After click user will redirected into checkout page.
+
+</Step>
+
+<Step title="Checkout">
+  Checkout page where user can connect wallet and pay. See [crypto wallet guide](essentials/crypto_wallet)
+  <Frame>
+    <img src="/images/checkout.png" alt="Screenshot of checkout page" style={{ borderRadius: '0.5rem' }} />
+  </Frame>
+</Step>
+
+</Steps>
+
+## Webhook integration
+Webhooks allow your application to receive real-time events, such as when an invoice is paid.
+All webhook requests are signed to verify authenticity.
+
+Follow these steps to integrate Paylora webhook into your web app.
+<Steps>
+<Step title="Generate webhook key">
+  Click `Add Webhook`, and put endpoints url into field than click save
+  <Frame>
+    <img src="/images/webhook.png" alt="Screenshot of settings webhook page" style={{ borderRadius: '0.5rem' }} />
+  </Frame>
+</Step>
+<Step title="Backend integration">
+Your server should expose an endpoint to receive webhook events.  
+```javascript
+// server.js or index.js
+import express from 'express';
+import crypto from 'crypto';
+
+const app = express();
+app.use(express.json());
+
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'your_secret_here';
+
+function verifySignature(bodyString, signature, secret) {
+  const expected = crypto.createHmac('sha256', secret).update(bodyString).digest('hex');
+  return signature === expected;
+}
+
+app.post('/webhook', (req, res) => {
+  const signature = req.headers['x-paylora-signature'];
+  const bodyString = JSON.stringify(req.body);
+
+  if (!verifySignature(bodyString, signature, WEBHOOK_SECRET)) {
+    return res.status(401).send('Invalid signature');
+  }
+
+  // Handle the event
+  const { type, data } = req.body;
+
+  if (type === 'invoice_paid') {
+    console.log('Invoice paid:', data.invoice);
+    console.log('Token:', data.token);
+    // TODO: update your database or trigger business logic
+  }
+
+  res.status(200).send({ received: true });
+});
+
+app.listen(3000, () => {
+  console.log('Webhook server listening on port 3000');
+});
+
+```
+<Warning>
+Important Notes
+
+- Verify the signature for every request. This prevents malicious requests.
+
+- Respond with 200 OK after successful handling.
+
+- Use HTTPS in production to secure the webhook URL.
+
+- Retry handling: If the request fails, the webhook sender may retry, so make your endpoint idempotent.
+</Warning>
+
+Example Event Body 
+```javascript
+{
+  "success": true,
+  "type": "invoice_paid",
+  "data": {
+    "invoice": {
+      "uuid": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "user_uuid": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "status": "paid",
+      "amount": 100,
+      "fee_amount": 5,
+      "token_address": "0xAbC123...",
+      "contract_address": "0xDeF456...",
+      "network": "ARB_SEPOLIA",
+      "client": "0xDeF456...",
+      "hash": "0xHash123...",
+      "message_id": "12345",
+      "channel_uuid": "12345",
+      "customer_id": "123456789",
+      "chain_id": 11155111,
+    },
+    "token": {
+      "uuid": "<string>",
+      "name": "<string>",
+      "address": "<string>",
+      "network": "ARB_SEPOLIA",
+      "decimals": 18,
+      "status": "whitelisted"
+    }
+  }
+}
+
+```
+</Step>
+</Steps>

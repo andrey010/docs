@@ -1,13 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Paylora docs",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "navigation": {
     "tabs": [
       {
@@ -22,82 +22,42 @@
             ]
           },
           {
-            "group": "Customization",
+            "group": "Tutorials",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "essentials/telegram",
+              "essentials/crypto_wallet"
             ]
           },
           {
             "group": "Writing content",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "essentials/images"
             ]
           }
         ]
       },
       {
         "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
-        ]
+        "openapi": "./api-reference/swagger-spec.json"
+        
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "https://t.me/paylora_support"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Web App",
+      "href": "https://app.paylora.org"
     }
   },
   "contextual": {
@@ -114,9 +74,9 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/paylora_org",
+      "github": "https://github.com/paylora-org",
+      "telegram": "https://t.me/paylora_org"
     }
   }
 }

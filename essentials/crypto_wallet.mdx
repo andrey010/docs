@@ -1,0 +1,230 @@
+---
+title: 'Crypto wallet'
+description: 'Crypto wallet configuration'
+icon: 'wallet'
+---
+
+Learn how to configure your wallet to work with our app and accept crypto payments. And basic inforamtion for users who new in crypto
+
+
+## Supported Wallets
+
+You can use any EVM-compatible wallet, including:
+
+ - MetaMask
+
+ - Rabby
+
+ - OKX Wallet
+
+ - Trust Wallet
+
+ - Coinbase Wallet
+
+ - Ledger (via MetaMask connection)
+
+ - Any wallet that supports WalletConnect
+
+## Connecting your wallet
+
+1. Open the Paylora Web App.
+
+2. Click “Connect Wallet” on the checkout page.
+
+3. Choose your wallet
+
+4. Confirm the connection inside your wallet.
+
+5. Once connected, your wallet address will appear in the checkout card.
+
+## Adding Supported Networks to MetaMask
+
+Before creating or paying invoices, ensure the required blockchain network is added to your wallet.
+You can add networks automatically or manually.
+
+## Automatic one-click network setup
+
+When creating or paying an invoice:
+
+- If a required network is missing, you’ll see “Add Network” / “Switch Network” prompt.
+
+- Click Approve in MetaMask.
+
+- Wallet will automatically switch to the correct network.
+
+## Manual network setup (if needed)
+
+If automatic setup fails:
+
+- Open MetaMask
+
+- Click on your network dropdown
+
+- Select Add network → Add a network manually
+
+### Fill in:
+
+<CodeGroup>
+
+```json Ethereum (Mainnet)
+Network name: Ethereum
+RPC URL: https://rpc.ankr.com/eth
+Chain ID: 1
+Currency: ETH
+Block Explorer: https://etherscan.io
+```
+```json Ethereum Sepolia (Testnet)
+Network name: Ethereum Sepolia
+RPC URL: https://rpc.sepolia.org
+Chain ID: 11155111
+Currency: ETH
+Block Explorer: https://sepolia.etherscan.io
+```
+
+</CodeGroup>
+
+<CodeGroup>
+```json Arbitrum One (Mainnet)
+Network name: Arbitrum One
+RPC URL: https://arb1.arbitrum.io/rpc
+Chain ID: 42161
+Currency: ETH
+Block Explorer: https://arbiscan.io
+```
+```json Arbitrum Sepolia (Testnet)
+Network name: Arbitrum Sepolia
+RPC URL: https://sepolia-rollup.arbitrum.io/rpc
+Chain ID: 421614
+Currency: ETH
+Block Explorer: https://sepolia.arbiscan.io
+```
+</CodeGroup>
+
+<CodeGroup>
+```json Base (Mainnet)
+Network name: Base
+RPC URL: https://mainnet.base.org
+Chain ID: 8453
+Currency: ETH
+Block Explorer: https://basescan.org
+```
+```json Base Sepolia (Testnet)
+Network name: Base Sepolia
+RPC URL: https://sepolia.base.org
+Chain ID: 84532
+Currency: ETH
+Block Explorer: https://sepolia.basescan.org
+```
+</CodeGroup>
+
+## Crypto Basics for New Users
+
+If you're new to crypto, don’t worry — this short guide will help you understand the essentials before using a wallet or making your first transaction.
+
+## What Is a Crypto Wallet?
+
+A crypto wallet is an app that lets you store and manage your digital assets (like ETH, USDC, BTC, etc.).
+It works similarly to an online banking app — but you control everything yourself.
+
+There are two main types of wallets:
+
+### 1. Custodial Wallet
+
+- A company (exchange, bank, app) controls your funds for you
+
+- They hold your private keys
+
+- Easy to use but less control
+
+Examples: Binance, Coinbase, Crypto.com
+
+### 2. Non-Custodial Wallet (Self-Custody)
+
+- You fully control your funds
+
+- Only you have access to your private keys & recovery phrase
+
+- No company can freeze or take your funds
+
+- Requires more responsibility
+
+Examples: MetaMask, Rabby, Trust Wallet, Coinbase Wallet
+<Warning>
+For our payment system, we recommend a non-custodial wallet, because it ensures your payments go directly from you to the receiver — without middlemen.
+</Warning>
+
+## What Are “Non-Custodial Payments”?
+
+Non-custodial payments mean:
+
+- No centralized company holds your money
+
+- Payments happen directly on the blockchain
+
+- You stay in full control of your funds
+
+- The system cannot charge your wallet automatically
+
+- Every transaction requires your approval in the wallet
+
+- This makes payments safer and more transparent.
+
+## Important Security Tips
+
+Because crypto wallets are fully controlled by you, you must follow security best practices:
+
+### 1. Never share your Recovery Phrase (Seed Phrase)
+
+This is the most important rule.
+<Warning>
+If someone gets your recovery phrase, they can access your wallet and take all your funds.
+Even support teams, bots, administrators — nobody should ask for it.
+</Warning>
+
+### 2. Keep your wallet app updated
+
+New updates fix security vulnerabilities.
+Always update MetaMask, Rabby, or Trust Wallet when possible.
+
+### 3. Double-check every transaction
+
+Before confirming:
+
+- Verify the network (ETH, Base, Arbitrum, etc.)
+
+- Verify the token (ETH, USDC, etc.)
+
+- Verify the amount
+
+- Check that the website you're using is official
+
+### 4. Protect your device
+
+- Use a phone lock or password
+
+- Enable two-factor authentication where possible
+
+- Don’t download unknown apps or files
+
+- Avoid connecting your wallet on suspicious websites
+
+### 5. Never send crypto to someone you don’t trust
+
+Blockchain transactions cannot be reversed.
+
+##  Final Notes
+
+Crypto may seem complicated at first, but once you understand the basics, it's a powerful tool:
+
+- You control your money
+
+- No banks
+
+- No middlemen
+
+- Instant global payments
+
+- Full transparency
+
+If you ever feel unsure, ask questions — it's better to learn slowly than make a risky mistake.
+

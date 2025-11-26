@@ -1,10 +1,10 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/user/me": {
+    "/api/v1/user/me": {
       "get": {
         "description": "Get current user. Permissions [\"all\"]",
-        "operationId": "UserController_getMe",
+        "operationId": "UserController_getMe_v1",
         "parameters": [],
         "responses": {
           "200": {
@@ -140,10 +140,10 @@
         ]
       }
     },
-    "/api/user/{uuid}": {
+    "/api/v1/user/{uuid}": {
       "patch": {
         "description": "Update user. Permissions [\"admin\"]",
-        "operationId": "UserController_updateRole",
+        "operationId": "UserController_updateRole_v1",
         "parameters": [
           {
             "name": "uuid",
@@ -298,10 +298,10 @@
         ]
       }
     },
-    "/api/user": {
+    "/api/v1/user": {
       "get": {
         "description": "Users list. Permissions [\"admin\"]",
-        "operationId": "UserController_getList",
+        "operationId": "UserController_getList_v1",
         "parameters": [
           {
             "name": "limit",
@@ -491,17 +491,17 @@
         ]
       }
     },
-    "/api/auth/register": {
+    "/api/v1/user/whitelist/request": {
       "post": {
-        "description": "Api for registration. Should confirm email",
-        "operationId": "AuthController_register",
+        "description": "Update user. Permissions [\"customer\"]",
+        "operationId": "UserController_requestWhiteList_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
+                "$ref": "#/components/schemas/RequsetWhiteListDto"
               }
             }
           }
@@ -629,1009 +629,28 @@
             }
           }
         },
-        "summary": "Register a new user",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
-    "/api/auth/register/confirm": {
-      "post": {
-        "description": "Api for email confirmation",
-        "operationId": "AuthController_registerConfirm",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ConfirmRegistrationdDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "User`s email confirmed",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 400,
-                    "message": [
-                      "[value] is not valid"
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 401,
-                    "message": "Invalid signature | jwt must be provided"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 403,
-                    "message": "Only [admin, customer] has access"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Resource Not Found"
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 409,
-                    "message": "Resource with unique value (email, name etc) already exist"
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 429,
-                    "message": "Too Many Requests"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 500,
-                    "message": "Sever error message"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "Confirm user registration email",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
-    "/api/auth/login": {
-      "post": {
-        "description": "Api for login",
-        "operationId": "AuthController_login",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "User`s logined",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true,
-                  "data": {
-                    "access": ""
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 400,
-                    "message": [
-                      "[value] is not valid"
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 401,
-                    "message": "Invalid signature | jwt must be provided"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 403,
-                    "message": "Only [admin, customer] has access"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Resource Not Found"
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 409,
-                    "message": "Resource with unique value (email, name etc) already exist"
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 429,
-                    "message": "Too Many Requests"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 500,
-                    "message": "Sever error message"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "User login",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
-    "/api/auth/refresh": {
-      "post": {
-        "description": "Api for refresh token",
-        "operationId": "AuthController_refreshTokens",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "User`s logined",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true,
-                  "data": {
-                    "access": ""
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 400,
-                    "message": [
-                      "[value] is not valid"
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 401,
-                    "message": "Invalid signature | jwt must be provided"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 403,
-                    "message": "Only [admin, customer] has access"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Resource Not Found"
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 409,
-                    "message": "Resource with unique value (email, name etc) already exist"
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 429,
-                    "message": "Too Many Requests"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 500,
-                    "message": "Sever error message"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "Refresh token",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
-    "/api/auth/social-networks/get_url": {
-      "get": {
-        "description": "User should use url from response when user confirm sign in he will redirect to UI now it will be dummy UI url but from thisUI url should get code from ?code=<some_code> an send request into /social-networks/confirm_code",
-        "operationId": "AuthController_socialSignIn",
-        "parameters": [
+        "security": [
           {
-            "name": "type",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "default": "google",
-              "type": "string",
-              "enum": [
-                "google",
-                "fb"
-              ]
-            }
+            "JWT": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Sign up successful",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true,
-                  "data": {
-                    "url": ""
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "API return url for sign in",
+        "summary": "Request whitelist status",
         "tags": [
-          "Auth"
+          "User"
         ]
       }
     },
-    "/api/auth/social-networks/confirm_code/sign_in": {
+    "/api/v1/invoice/by_api_key": {
       "post": {
-        "description": "After user put code logic will check if user with email is exist return token if no create new user and send token",
-        "operationId": "AuthController_socialSignInGetcode",
+        "description": "Create invoice. Permissions [\"api key\"]",
+        "operationId": "InvoiceController_createInvoiceByApiKey_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SocialNetworksSignInDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "User`s logined",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true,
-                  "data": {
-                    "access": ""
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 400,
-                    "message": [
-                      "[value] is not valid"
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 401,
-                    "message": "Invalid signature | jwt must be provided"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 403,
-                    "message": "Only [admin, customer] has access"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Resource Not Found"
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 409,
-                    "message": "Resource with unique value (email, name etc) already exist"
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 429,
-                    "message": "Too Many Requests"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 500,
-                    "message": "Sever error message"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "Social network sign in confirmation",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
-    "/api/auth/resend_confirm_email": {
-      "post": {
-        "description": "Resend confirmation email api",
-        "operationId": "AuthController_resendEmail",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResetPasswordDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Email sent",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 400,
-                    "message": [
-                      "[value] is not valid"
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 401,
-                    "message": "Invalid signature | jwt must be provided"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 403,
-                    "message": "Only [admin, customer] has access"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Resource Not Found"
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 409,
-                    "message": "Resource with unique value (email, name etc) already exist"
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 429,
-                    "message": "Too Many Requests"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 500,
-                    "message": "Sever error message"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "Resend registration confirmation email",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
-    "/api/auth/reset_password": {
-      "post": {
-        "description": "Send email for reset password",
-        "operationId": "AuthController_resetPassword",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResetPasswordDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Email sent",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 400,
-                    "message": [
-                      "[value] is not valid"
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 401,
-                    "message": "Invalid signature | jwt must be provided"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 403,
-                    "message": "Only [admin, customer] has access"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Resource Not Found"
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 409,
-                    "message": "Resource with unique value (email, name etc) already exist"
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 429,
-                    "message": "Too Many Requests"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 500,
-                    "message": "Sever error message"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "Send reset password email",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
-    "/api/auth/reset_password/confirm": {
-      "post": {
-        "description": "Update password api",
-        "operationId": "AuthController_resetPasswordConfirm",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ConfirmResetPasswordDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Password updated",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 400,
-                    "message": [
-                      "[value] is not valid"
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 401,
-                    "message": "Invalid signature | jwt must be provided"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 403,
-                    "message": "Only [admin, customer] has access"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 404,
-                    "message": "Resource Not Found"
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 409,
-                    "message": "Resource with unique value (email, name etc) already exist"
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 429,
-                    "message": "Too Many Requests"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "example": {
-                    "statusCode": 500,
-                    "message": "Sever error message"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "Confirm reset password and update password",
-        "tags": [
-          "Auth"
-        ]
-      }
-    },
-    "/api/webhook/alchemy": {
-      "post": {
-        "description": "Processes incoming webhooks from Alchemy",
-        "operationId": "WebhookController_handleWebhook",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "summary": "Handle Alchemy webhook",
-        "tags": [
-          "Webhook"
-        ]
-      }
-    },
-    "/api/webhook": {
-      "post": {
-        "description": "Create webhook (use endpoint `POST` method). Permissions [\"customer\"]",
-        "operationId": "WebhookController_createWebhook",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateWebhookDto"
+                "$ref": "#/components/schemas/CreateInvoiceDto"
               }
             }
           }
@@ -1649,7 +668,300 @@
                     {
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/Webhook"
+                          "$ref": "#/components/schemas/Invoice"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "summary": "Create invoice",
+        "tags": [
+          "Invoice"
+        ]
+      }
+    },
+    "/api/v1/invoice/from_app": {
+      "post": {
+        "description": "Create invoice from Telegram Mini App",
+        "operationId": "InvoiceController_createInvoiceFromApp_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInvoiceFromAppDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resource model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResourceDto"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Invoice"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create invoice from Telegram Mini App",
+        "tags": [
+          "Invoice"
+        ]
+      }
+    },
+    "/api/v1/invoice": {
+      "post": {
+        "description": "Create invoice. Permissions [\"customer\"]",
+        "operationId": "InvoiceController_createInvoice_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInvoiceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resource model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResourceDto"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Invoice"
                         }
                       }
                     }
@@ -1764,43 +1076,74 @@
             "JWT": []
           }
         ],
-        "summary": "Create a new webhook",
+        "summary": "Create invoice",
         "tags": [
-          "Webhook"
+          "Invoice"
         ]
       },
       "get": {
-        "description": "Webhook list. Permissions [\"customer\"]",
-        "operationId": "WebhookController_getList",
+        "description": "Invoice list. Permissions [\"customer\"]",
+        "operationId": "InvoiceController_getList_v1",
         "parameters": [
           {
-            "name": "orderType",
+            "name": "limit",
             "required": false,
             "in": "query",
-            "description": "Order type",
+            "description": "default 10",
             "schema": {
-              "default": "DESC",
-              "type": "string"
+              "type": "number"
             }
           },
           {
             "name": "offset",
             "required": false,
             "in": "query",
-            "description": "The number of items to skip",
+            "description": "default 0",
             "schema": {
-              "default": 0,
               "type": "number"
             }
           },
           {
-            "name": "limit",
+            "name": "orderType",
             "required": false,
             "in": "query",
-            "description": "The number of items to return",
             "schema": {
-              "default": 10,
-              "type": "number"
+              "example": "DESC",
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "name": "startDate",
+            "required": false,
+            "in": "query",
+            "description": "Start date filter",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": false,
+            "in": "query",
+            "description": "End date filter",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "tokenAddress",
+            "required": false,
+            "in": "query",
+            "description": "The token address for the invoice",
+            "schema": {
+              "example": "0x203fC64C12a51C48755Cf77CB63c2F0618657cFD",
+              "type": "string"
             }
           }
         ],
@@ -1822,7 +1165,7 @@
                         "data": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Webhook"
+                            "$ref": "#/components/schemas/Invoice"
                           }
                         }
                       }
@@ -1938,22 +1281,24 @@
             "JWT": []
           }
         ],
-        "summary": "Get a list of webhooks",
+        "summary": "Get list of invoices",
         "tags": [
-          "Webhook"
+          "Invoice"
         ]
       }
     },
-    "/api/webhook/{uuid}": {
+    "/api/v1/invoice/{uuid}": {
       "get": {
-        "description": "Webhook get by uuid. Permissions [\"customer\"]",
-        "operationId": "WebhookController_findWebhookByUuid",
+        "description": "Invoice get by uuid. Permissions [\"customer\"]",
+        "operationId": "InvoiceController_findInvoiceByUuid_v1",
         "parameters": [
           {
             "name": "uuid",
             "required": true,
             "in": "path",
+            "description": "The UUID of the invoice",
             "schema": {
+              "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
               "type": "string"
             }
           }
@@ -1971,7 +1316,7 @@
                     {
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/Webhook"
+                          "$ref": "#/components/schemas/Invoice"
                         }
                       }
                     }
@@ -2086,20 +1431,22 @@
             "JWT": []
           }
         ],
-        "summary": "Get webhook by UUID",
+        "summary": "Get invoice by UUID",
         "tags": [
-          "Webhook"
+          "Invoice"
         ]
       },
       "patch": {
-        "description": "Update webhook by uuid. Permissions [\"customer\"]",
-        "operationId": "WebhookController_updateWebhook",
+        "description": "Update invoice by uuid. Permissions [\"admin\"]",
+        "operationId": "InvoiceController_updateInvoice_v1",
         "parameters": [
           {
             "name": "uuid",
             "required": true,
             "in": "path",
+            "description": "The UUID of the invoice",
             "schema": {
+              "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
               "type": "string"
             }
           }
@@ -2109,7 +1456,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateWebhookDto"
+                "$ref": "#/components/schemas/UpdateInvoiceDto"
               }
             }
           }
@@ -2127,7 +1474,7 @@
                     {
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/Webhook"
+                          "$ref": "#/components/schemas/Invoice"
                         }
                       }
                     }
@@ -2242,17 +1589,19 @@
             "JWT": []
           }
         ],
-        "summary": "Update webhook by UUID",
+        "summary": "Update invoice by UUID",
         "tags": [
-          "Webhook"
+          "Invoice"
         ]
-      },
-      "delete": {
-        "description": "Delete webhook by uuid. Permissions [\"customer\"]",
-        "operationId": "WebhookController_deleteWebhook",
+      }
+    },
+    "/api/v1/invoice/by_token/{token}": {
+      "get": {
+        "description": "Invoice get by token",
+        "operationId": "InvoiceController_findInvoiceByToken_v1",
         "parameters": [
           {
-            "name": "uuid",
+            "name": "token",
             "required": true,
             "in": "path",
             "schema": {
@@ -2261,6 +1610,162 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Resource model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResourceDto"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Invoice"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get invoice by token",
+        "tags": [
+          "Invoice"
+        ]
+      }
+    },
+    "/api/v1/invoice/stats/summary": {
+      "get": {
+        "description": "Get invoice statistics. Permissions [\"customer\"]",
+        "operationId": "InvoiceController_getStats_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User`s email confirmed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "data": {
+                    "totalInvoices": 100,
+                    "totalByTokenResult": [
+                      {
+                        "token": "ETH",
+                        "network": "mainnet",
+                        "amount": "1.5",
+                        "count": "2"
+                      }
+                    ],
+                    "last24HoursCount": 5
+                  }
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -2367,32 +1872,16 @@
             "JWT": []
           }
         ],
-        "summary": "Delete webhook by UUID",
+        "summary": "Get invoice statistics",
         "tags": [
-          "Webhook"
+          "Invoice"
         ]
       }
     },
-    "/api/webhook/test": {
+    "/api/v1/api_key": {
       "post": {
-        "description": "Endpoint to test webhook functionality",
-        "operationId": "WebhookController_testWebhook",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "summary": "Test webhook endpoint",
-        "tags": [
-          "Webhook"
-        ]
-      }
-    },
-    "/api/api_key": {
-      "post": {
-        "description": "Create API Key. Permissions [\"customer\"] with status `whitelisted`",
-        "operationId": "ApiKeyController_createApiKey",
+        "description": "Create API Key. Permissions [\"customer\"]",
+        "operationId": "ApiKeyController_createApiKey_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2539,7 +2028,7 @@
       },
       "get": {
         "description": "API Key list. Permissions [\"customer\"]",
-        "operationId": "ApiKeyController_getList",
+        "operationId": "ApiKeyController_getList_v1",
         "parameters": [
           {
             "name": "limit",
@@ -2713,10 +2202,10 @@
         ]
       }
     },
-    "/api/api_key/{uuid}": {
+    "/api/v1/api_key/{uuid}": {
       "get": {
         "description": "API Key get by uuid. Permissions [\"customer\"]",
-        "operationId": "ApiKeyController_findApiKeyByUuid",
+        "operationId": "ApiKeyController_findApiKeyByUuid_v1",
         "parameters": [
           {
             "name": "uuid",
@@ -2864,7 +2353,7 @@
       },
       "patch": {
         "description": "Update API Key by uuid. Permissions [\"customer\"]",
-        "operationId": "ApiKeyController_updateApiKey",
+        "operationId": "ApiKeyController_updateApiKey_v1",
         "parameters": [
           {
             "name": "uuid",
@@ -3019,12 +2508,142 @@
         "tags": [
           "ApiKey"
         ]
+      },
+      "delete": {
+        "description": "Delete API Key by uuid. Permissions [\"customer\"]",
+        "operationId": "ApiKeyController_deleteWebhook_v1",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "description": "The UUID of the API Key",
+            "schema": {
+              "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "JWT": []
+          }
+        ],
+        "summary": "Delete API Key by UUID",
+        "tags": [
+          "ApiKey"
+        ]
       }
     },
-    "/api/token": {
+    "/api/v1/token": {
       "post": {
         "description": "Create Token. Permissions [\"admin\"]",
-        "operationId": "TokenController_create",
+        "operationId": "TokenController_create_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -3171,7 +2790,7 @@
       },
       "get": {
         "description": "Token list. Permissions [\"public\"]",
-        "operationId": "TokenController_getList",
+        "operationId": "TokenController_getList_v1",
         "parameters": [
           {
             "name": "limit",
@@ -3345,10 +2964,10 @@
         ]
       }
     },
-    "/api/token/{uuid}": {
+    "/api/v1/token/{uuid}": {
       "get": {
         "description": "Token get by uuid. Permissions [\"admin\"]",
-        "operationId": "TokenController_findOne",
+        "operationId": "TokenController_findOne_v1",
         "parameters": [
           {
             "name": "uuid",
@@ -3496,7 +3115,7 @@
       },
       "patch": {
         "description": "Update Token by uuid. Permissions [\"admin\"]",
-        "operationId": "TokenController_update",
+        "operationId": "TokenController_update_v1",
         "parameters": [
           {
             "name": "uuid",
@@ -3654,7 +3273,7 @@
       },
       "delete": {
         "description": "Delete Token by uuid. Permissions [\"admin\"]",
-        "operationId": "TokenController_remove",
+        "operationId": "TokenController_remove_v1",
         "parameters": [
           {
             "name": "uuid",
@@ -3801,17 +3420,17 @@
         ]
       }
     },
-    "/api/invoice": {
+    "/api/v1/auth/register": {
       "post": {
-        "description": "Create invoice. Permissions [\"api key\"]",
-        "operationId": "InvoiceController_createInvoice",
+        "description": "Api for registration. Should confirm email",
+        "operationId": "AuthController_register_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateInvoiceDto"
+                "$ref": "#/components/schemas/CreateUserDto"
               }
             }
           }
@@ -3829,7 +3448,1686 @@
                     {
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/Invoice"
+                          "$ref": "#/components/schemas/User"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Register a new user",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/register/confirm": {
+      "post": {
+        "description": "Api for email confirmation",
+        "operationId": "AuthController_registerConfirm_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmRegistrationdDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User`s email confirmed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Confirm user registration email",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "description": "Api for login",
+        "operationId": "AuthController_login_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User`s logined",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "data": {
+                    "access": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "User login",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/telegram": {
+      "post": {
+        "description": "Api for telegram login",
+        "operationId": "AuthController_telegramLogin_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TelegramLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User`s logined via telegram",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "data": {
+                    "access": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "User telegram login",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/telegram/mini_app": {
+      "post": {
+        "description": "Api for telegram mini app login",
+        "operationId": "AuthController_telegramMiniAppLogin_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TelegramMiniAppLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User`s logined via telegram mini app",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "data": {
+                    "access": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "User telegram mini app login",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "description": "Api for logout",
+        "operationId": "AuthController_logout_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User`s logout",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "summary": "User logout",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "description": "Api for refresh token",
+        "operationId": "AuthController_refreshTokens_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User`s logined",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "data": {
+                    "access": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Refresh token",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/social-networks/get_url/{type}": {
+      "post": {
+        "description": "User should use url from response when user confirm sign in he will redirect to UI now it will be dummy UI url but from thisUI url should get code from ?code=<some_code> an send request into /social-networks/confirm_code",
+        "operationId": "AuthController_socialSignIn_v1",
+        "parameters": [
+          {
+            "name": "type",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sign up successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "data": {
+                    "url": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "API return url for sign in",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/social-networks/sign_in": {
+      "post": {
+        "description": "After user put code logic will check if user with email is exist return token if no create new user and send token",
+        "operationId": "AuthController_socialSignInGetcode_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SocialNetworksSignInDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User`s logined",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "data": {
+                    "access": ""
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Social network sign in confirmation",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/resend_confirm_email": {
+      "post": {
+        "description": "Resend confirmation email api",
+        "operationId": "AuthController_resendEmail_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email sent",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Resend registration confirmation email",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/reset_password": {
+      "post": {
+        "description": "Send email for reset password",
+        "operationId": "AuthController_resetPassword_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email sent",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Send reset password email",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/reset_password/confirm": {
+      "post": {
+        "description": "Update password api",
+        "operationId": "AuthController_resetPasswordConfirm_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password updated",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Confirm reset password and update password",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/auth/reset_password/current": {
+      "post": {
+        "description": "Update current password api",
+        "operationId": "AuthController_resetCurrentPassword_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetCurentPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password updated",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "summary": "Update current password",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/v1/webhook/alchemy/{network}": {
+      "post": {
+        "description": "Processes incoming webhooks from Alchemy",
+        "operationId": "WebhookController_handleWebhook_v1",
+        "parameters": [
+          {
+            "name": "network",
+            "required": true,
+            "in": "path",
+            "description": "The blockchain network this webhook is for.",
+            "schema": {
+              "enum": [
+                "ARB_SEPOLIA",
+                "ARB_MAINNET",
+                "ETH_SEPOLIA",
+                "BASE_SEPOLIA"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Handle Alchemy webhook",
+        "tags": [
+          "Webhook"
+        ]
+      }
+    },
+    "/api/v1/webhook": {
+      "post": {
+        "description": "Create webhook (use endpoint `POST` method). Permissions [\"customer\"]",
+        "operationId": "WebhookController_createWebhook_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWebhookDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resource model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResourceDto"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Webhook"
                         }
                       }
                     }
@@ -3941,47 +5239,46 @@
         },
         "security": [
           {
-            "ApiKey": []
+            "JWT": []
           }
         ],
-        "summary": "Create invoice",
+        "summary": "Create a new webhook",
         "tags": [
-          "Invoice"
+          "Webhook"
         ]
       },
       "get": {
-        "description": "Invoice list. Permissions [\"customer\"]",
-        "operationId": "InvoiceController_getList",
+        "description": "Webhook list. Permissions [\"customer\"]",
+        "operationId": "WebhookController_getList_v1",
         "parameters": [
           {
-            "name": "limit",
+            "name": "orderType",
             "required": false,
             "in": "query",
-            "description": "default 10",
+            "description": "Order type",
             "schema": {
-              "type": "number"
+              "default": "DESC",
+              "type": "string"
             }
           },
           {
             "name": "offset",
             "required": false,
             "in": "query",
-            "description": "default 0",
+            "description": "The number of items to skip",
             "schema": {
+              "default": 0,
               "type": "number"
             }
           },
           {
-            "name": "orderType",
+            "name": "limit",
             "required": false,
             "in": "query",
+            "description": "The number of items to return",
             "schema": {
-              "example": "DESC",
-              "type": "string",
-              "enum": [
-                "ASC",
-                "DESC"
-              ]
+              "default": 10,
+              "type": "number"
             }
           }
         ],
@@ -4003,7 +5300,7 @@
                         "data": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Invoice"
+                            "$ref": "#/components/schemas/Webhook"
                           }
                         }
                       }
@@ -4119,24 +5416,22 @@
             "JWT": []
           }
         ],
-        "summary": "Get list of invoices",
+        "summary": "Get a list of webhooks",
         "tags": [
-          "Invoice"
+          "Webhook"
         ]
       }
     },
-    "/api/invoice/{uuid}": {
+    "/api/v1/webhook/{uuid}": {
       "get": {
-        "description": "Invoice get by uuid. Permissions [\"customer\"]",
-        "operationId": "InvoiceController_findInvoiceByUuid",
+        "description": "Webhook get by uuid. Permissions [\"customer\"]",
+        "operationId": "WebhookController_findWebhookByUuid_v1",
         "parameters": [
           {
             "name": "uuid",
             "required": true,
             "in": "path",
-            "description": "The UUID of the invoice",
             "schema": {
-              "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
               "type": "string"
             }
           }
@@ -4154,7 +5449,7 @@
                     {
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/Invoice"
+                          "$ref": "#/components/schemas/Webhook"
                         }
                       }
                     }
@@ -4269,22 +5564,20 @@
             "JWT": []
           }
         ],
-        "summary": "Get invoice by UUID",
+        "summary": "Get webhook by UUID",
         "tags": [
-          "Invoice"
+          "Webhook"
         ]
       },
       "patch": {
-        "description": "Update invoice by uuid. Permissions [\"admin\"]",
-        "operationId": "InvoiceController_updateInvoice",
+        "description": "Update webhook by uuid. Permissions [\"customer\"]",
+        "operationId": "WebhookController_updateWebhook_v1",
         "parameters": [
           {
             "name": "uuid",
             "required": true,
             "in": "path",
-            "description": "The UUID of the invoice",
             "schema": {
-              "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
               "type": "string"
             }
           }
@@ -4294,7 +5587,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateInvoiceDto"
+                "$ref": "#/components/schemas/UpdateWebhookDto"
               }
             }
           }
@@ -4312,7 +5605,7 @@
                     {
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/Invoice"
+                          "$ref": "#/components/schemas/Webhook"
                         }
                       }
                     }
@@ -4427,9 +5720,568 @@
             "JWT": []
           }
         ],
-        "summary": "Update invoice by UUID",
+        "summary": "Update webhook by UUID",
         "tags": [
-          "Invoice"
+          "Webhook"
+        ]
+      },
+      "delete": {
+        "description": "Delete webhook by uuid. Permissions [\"customer\"]",
+        "operationId": "WebhookController_deleteWebhook_v1",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "summary": "Delete webhook by UUID",
+        "tags": [
+          "Webhook"
+        ]
+      }
+    },
+    "/api/v1/webhook/test": {
+      "post": {
+        "description": "Endpoint to test webhook functionality",
+        "operationId": "WebhookController_testWebhook_v1",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Test webhook endpoint",
+        "tags": [
+          "Webhook"
+        ]
+      }
+    },
+    "/api/v1/channels": {
+      "get": {
+        "description": "Retrieve all telegram channels associated with the authenticated user",
+        "operationId": "ChannelController_findAll_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Paginated list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Channel"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "summary": "Get all telegram channels for the current user",
+        "tags": [
+          "Сhannels"
+        ]
+      }
+    },
+    "/api/v1/channels/{uuid}": {
+      "get": {
+        "description": "Retrieve a telegram channel by its UUID",
+        "operationId": "ChannelController_findOne_v1",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resource model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResourceDto"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Channel"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "summary": "Get a specific telegram channel",
+        "tags": [
+          "Сhannels"
+        ]
+      },
+      "delete": {
+        "description": "Deletes a telegram channel by UUID",
+        "operationId": "ChannelController_remove_v1",
+        "parameters": [
+          {
+            "name": "uuid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "[value] is not valid"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Invalid signature | jwt must be provided"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 403,
+                    "message": "Only [admin, customer] has access"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 404,
+                    "message": "Resource Not Found"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 409,
+                    "message": "Resource with unique value (email, name etc) already exist"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 429,
+                    "message": "Too Many Requests"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "statusCode": 500,
+                    "message": "Sever error message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "summary": "Delete a telegram channel",
+        "tags": [
+          "Сhannels"
         ]
       }
     }
@@ -4449,9 +6301,9 @@
   "components": {
     "securitySchemes": {
       "JWT": {
-        "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "bearerFormat": "JWT",
+        "type": "http"
       },
       "ApiKey": {
         "scheme": "bearer",
@@ -4469,6 +6321,12 @@
           "email": {
             "type": "string"
           },
+          "telegram_id": {
+            "type": "string"
+          },
+          "tg_name": {
+            "type": "string"
+          },
           "status": {
             "type": "string"
           },
@@ -4483,15 +6341,23 @@
             "type": "string",
             "example": "0xDeF456...",
             "description": "User wallet address"
+          },
+          "signer_address": {
+            "type": "string",
+            "example": "0xDeF456...",
+            "description": "User wallet address"
           }
         },
         "required": [
           "user_uuid",
           "email",
+          "telegram_id",
+          "tg_name",
           "status",
           "created_on",
           "role",
-          "wallet"
+          "wallet",
+          "signer_address"
         ]
       },
       "ResourceDto": {
@@ -4529,6 +6395,7 @@
               "created",
               "purged",
               "verified",
+              "whitelisted_pending",
               "whitelisted"
             ],
             "example": "verified"
@@ -4536,6 +6403,406 @@
         },
         "required": [
           "role"
+        ]
+      },
+      "RequsetWhiteListDto": {
+        "type": "object",
+        "properties": {
+          "wallet": {
+            "type": "string",
+            "description": "wallet address",
+            "example": "0xabc123..."
+          }
+        },
+        "required": [
+          "wallet"
+        ]
+      },
+      "Invoice": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "description": "The UUID of the invoice"
+          },
+          "user_uuid": {
+            "type": "string",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "description": "The UUID of the user associated with the invoice"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "paid",
+              "expired"
+            ],
+            "example": "created",
+            "description": "The status of the invoice"
+          },
+          "amount": {
+            "type": "number",
+            "example": 100,
+            "description": "The amount of the invoice"
+          },
+          "fee_amount": {
+            "type": "number",
+            "example": 5,
+            "description": "The fee amount for the invoice"
+          },
+          "token_address": {
+            "type": "string",
+            "example": "0xAbC123...",
+            "description": "The token address for the invoice"
+          },
+          "contract_address": {
+            "type": "string",
+            "example": "0xDeF456...",
+            "description": "The contract address for the invoice"
+          },
+          "network": {
+            "type": "string",
+            "example": "ethereum",
+            "description": "The network of the transaction"
+          },
+          "client": {
+            "type": "string",
+            "example": "0xDeF456...",
+            "description": "The client wallet address"
+          },
+          "hash": {
+            "type": "string",
+            "example": "0xHash123...",
+            "description": "The transaction hash",
+            "nullable": true
+          },
+          "signature": {
+            "type": "string",
+            "example": "0xHash123...",
+            "description": "Transaction Signature",
+            "nullable": true
+          },
+          "message_id": {
+            "type": "string",
+            "example": "12345",
+            "description": "The message ID associated with the invoice",
+            "nullable": true
+          },
+          "channel_uuid": {
+            "type": "string",
+            "example": "12345",
+            "description": "The chat ID associated with the invoice",
+            "nullable": true
+          },
+          "customer_id": {
+            "type": "string",
+            "example": "123456789",
+            "description": "The customer ID associated with the invoice",
+            "nullable": true
+          },
+          "chain_id": {
+            "type": "object",
+            "example": 11155111,
+            "description": "The chain ID of the blockchain network",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "example": "app.paylora.org/checkout?token=<token>",
+            "description": "Url of checkout page"
+          }
+        },
+        "required": [
+          "uuid",
+          "user_uuid",
+          "status",
+          "amount",
+          "fee_amount",
+          "token_address",
+          "contract_address",
+          "network",
+          "client",
+          "hash",
+          "signature",
+          "message_id",
+          "channel_uuid",
+          "customer_id",
+          "chain_id",
+          "url"
+        ]
+      },
+      "CreateInvoiceDto": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "example": 100,
+            "description": "The amount of the invoice"
+          },
+          "token_address": {
+            "type": "string",
+            "example": "0x203fC64C12a51C48755Cf77CB63c2F0618657cFD",
+            "description": "The token address for the invoice"
+          },
+          "network": {
+            "type": "string",
+            "example": "ARB_SEPOLIA",
+            "description": "The network of the transaction"
+          }
+        },
+        "required": [
+          "amount",
+          "token_address",
+          "network"
+        ]
+      },
+      "CreateInvoiceFromAppDto": {
+        "type": "object",
+        "properties": {
+          "customerInitData": {
+            "type": "string",
+            "example": "some_init_data_string_from_telegram",
+            "description": "Telegram Mini App initData for customer verification"
+          },
+          "amount": {
+            "type": "number",
+            "example": 100,
+            "description": "The amount of the invoice"
+          },
+          "tokenAddress": {
+            "type": "string",
+            "example": "0x203fC64C12a51C48755Cf77CB63c2F0618657cFD",
+            "description": "The token address for the invoice"
+          },
+          "userUuid": {
+            "type": "string",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "description": "The UUID of the user"
+          },
+          "channelUuid": {
+            "type": "string",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "description": "The UUID of the channel"
+          },
+          "messageId": {
+            "type": "string",
+            "example": "12345",
+            "description": "The message ID associated with the invoice"
+          },
+          "network": {
+            "type": "string",
+            "example": "ARB_SEPOLIA",
+            "description": "The network of the transaction"
+          },
+          "hash": {
+            "type": "string",
+            "example": "computed_hash_string",
+            "description": "Hash of the payment data for integrity verification"
+          }
+        },
+        "required": [
+          "customerInitData",
+          "amount",
+          "tokenAddress",
+          "userUuid",
+          "network",
+          "hash"
+        ]
+      },
+      "UpdateInvoiceDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "paid",
+              "expired"
+            ],
+            "example": "paid",
+            "description": "The status of the invoice"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "ApiKey": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "description": "The UUID of the API Key"
+          },
+          "user_uuid": {
+            "type": "string",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "description": "The UUID of the user associated with the API Key"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "example": "active",
+            "description": "The status of the API Key"
+          },
+          "key": {
+            "type": "string",
+            "example": "api_key_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "description": "The API Key itself"
+          },
+          "url": {
+            "type": "string",
+            "example": "https://example.com",
+            "description": "Web address"
+          }
+        },
+        "required": [
+          "uuid",
+          "user_uuid",
+          "status",
+          "key",
+          "url"
+        ]
+      },
+      "CreateApiKeyDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "https://example.com",
+            "description": "Web app url"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "UpdateApiKeyDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive"
+            ],
+            "example": "inactive",
+            "description": "The status of the API Key"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "Token": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "network": {
+            "type": "string",
+            "example": "ARB_SEPOLIA"
+          },
+          "decimals": {
+            "type": "number",
+            "example": 18
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "uuid",
+          "name",
+          "address",
+          "network",
+          "decimals",
+          "status"
+        ]
+      },
+      "CreateTokenDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "USDT",
+            "description": "The name of the token"
+          },
+          "address": {
+            "type": "string",
+            "example": "0xAbC123...",
+            "description": "The contract address of the token"
+          },
+          "decimals": {
+            "type": "number",
+            "example": 18,
+            "description": "The number of decimal places for the token"
+          },
+          "network": {
+            "type": "string",
+            "example": "ARB_SEPOLIA",
+            "description": "The network of the transaction"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "whitelisted",
+              "not_whitelisted"
+            ],
+            "example": "whitelisted",
+            "description": "The status of the token"
+          }
+        },
+        "required": [
+          "name",
+          "address",
+          "decimals",
+          "network",
+          "status"
+        ]
+      },
+      "UpdateTokenDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "USDT",
+            "description": "The name of the token"
+          },
+          "address": {
+            "type": "string",
+            "example": "0xAbC123...",
+            "description": "The contract address of the token"
+          },
+          "network": {
+            "type": "string",
+            "example": "ARB_SEPOLIA",
+            "description": "The network of the transaction"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "whitelisted",
+              "not_whitelisted"
+            ],
+            "example": "whitelisted",
+            "description": "The status of the token"
+          }
+        },
+        "required": [
+          "network"
         ]
       },
       "CreateUserDto": {
@@ -4584,6 +6851,60 @@
           "password"
         ]
       },
+      "TelegramLoginDto": {
+        "type": "object",
+        "properties": {
+          "auth_date": {
+            "type": "number",
+            "description": "Telegram authentication date",
+            "example": 1762417564
+          },
+          "first_name": {
+            "type": "string",
+            "description": "User first name",
+            "example": "Jhon"
+          },
+          "hash": {
+            "type": "string",
+            "description": "Authentication hash",
+            "example": "679c7c5844ds"
+          },
+          "id": {
+            "type": "number",
+            "description": "Telegram user ID",
+            "example": 1721678137
+          },
+          "photo_url": {
+            "type": "string",
+            "description": "User profile photo URL",
+            "example": "https://t.me/i/userpic/320/example.jpg"
+          },
+          "username": {
+            "type": "string",
+            "description": "Telegram username",
+            "example": "username_example"
+          }
+        },
+        "required": [
+          "auth_date",
+          "first_name",
+          "hash",
+          "id"
+        ]
+      },
+      "TelegramMiniAppLoginDto": {
+        "type": "object",
+        "properties": {
+          "initData": {
+            "type": "string",
+            "description": "Telegram init data string",
+            "example": "id=1721678137&first_name=Jhon&auth_date=1762417564&hash=679c7c5844ds"
+          }
+        },
+        "required": [
+          "initData"
+        ]
+      },
       "SocialNetworksSignInDto": {
         "type": "object",
         "properties": {
@@ -4599,11 +6920,17 @@
             "type": "string",
             "example": "4/0AWgavddtNRQ18dDzaB9Wlhm82tXC7tGVE-FfCvqaErDpVp3DZuw5895qDhuiluyBT3Zrdw",
             "description": "This code from redirected url ?code=4/0AWgavddtNRQ18dDzaB9Wlhm82tXC7tGVE-FfCvqaErDpVp3DZuw5895qDhuiluyBT3Zrdw"
+          },
+          "state": {
+            "type": "string",
+            "example": "0AWgavddtNRQ18dDzaB9Wlhm82tXC7tGVE-FfCvqaErDpVp3DZuw5895qDhuiluyBT3Zrdw",
+            "description": "This state from redirected url ?state=0AWgavddtNRQ18dDzaB9Wlhm82tXC7tGVE-FfCvqaErDpVp3DZuw5895qDhuiluyBT3Zrdw"
           }
         },
         "required": [
           "type",
-          "code"
+          "code",
+          "state"
         ]
       },
       "ResetPasswordDto": {
@@ -4633,6 +6960,23 @@
         "required": [
           "token",
           "password"
+        ]
+      },
+      "ResetCurentPasswordDto": {
+        "type": "object",
+        "properties": {
+          "old_password": {
+            "type": "string",
+            "example": "oldpassword123"
+          },
+          "new_password": {
+            "type": "string",
+            "example": "newpassword123"
+          }
+        },
+        "required": [
+          "old_password",
+          "new_password"
         ]
       },
       "Webhook": {
@@ -4687,282 +7031,35 @@
           }
         }
       },
-      "ApiKey": {
+      "Channel": {
         "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
             "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-            "description": "The UUID of the API Key"
+            "description": "The UUID of the telegram channel"
+          },
+          "channel_id": {
+            "type": "string",
+            "example": "-1001234567890",
+            "description": "Telegram channel ID"
+          },
+          "channel_title": {
+            "type": "string",
+            "example": "My Channel",
+            "description": "Telegram channel title"
           },
           "user_uuid": {
             "type": "string",
             "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-            "description": "The UUID of the user associated with the API Key"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "active",
-              "inactive"
-            ],
-            "example": "active",
-            "description": "The status of the API Key"
-          },
-          "key": {
-            "type": "string",
-            "example": "api_key_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-            "description": "The API Key itself"
-          },
-          "description": {
-            "type": "string",
-            "example": "My first API Key",
-            "description": "A description for the API Key"
+            "description": "The UUID of the user who owns this channel"
           }
         },
         "required": [
           "uuid",
-          "user_uuid",
-          "status",
-          "key",
-          "description"
-        ]
-      },
-      "CreateApiKeyDto": {
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string",
-            "example": "My first API Key",
-            "description": "A description for the API Key"
-          }
-        }
-      },
-      "UpdateApiKeyDto": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "active",
-              "inactive"
-            ],
-            "example": "inactive",
-            "description": "The status of the API Key"
-          }
-        },
-        "required": [
-          "status"
-        ]
-      },
-      "Token": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          },
-          "network": {
-            "type": "string",
-            "example": "ARB_SEPOLIA"
-          },
-          "status": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "uuid",
-          "name",
-          "address",
-          "network",
-          "status"
-        ]
-      },
-      "CreateTokenDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "USDT",
-            "description": "The name of the token"
-          },
-          "address": {
-            "type": "string",
-            "example": "0xAbC123...",
-            "description": "The contract address of the token"
-          },
-          "network": {
-            "type": "string",
-            "example": "ARB_SEPOLIA",
-            "description": "The network of the transaction"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "whitelisted",
-              "not_whitelisted"
-            ],
-            "example": "whitelisted",
-            "description": "The status of the token"
-          }
-        },
-        "required": [
-          "name",
-          "address",
-          "network",
-          "status"
-        ]
-      },
-      "UpdateTokenDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "USDT",
-            "description": "The name of the token"
-          },
-          "address": {
-            "type": "string",
-            "example": "0xAbC123...",
-            "description": "The contract address of the token"
-          },
-          "network": {
-            "type": "string",
-            "example": "ARB_SEPOLIA",
-            "description": "The network of the transaction"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "whitelisted",
-              "not_whitelisted"
-            ],
-            "example": "whitelisted",
-            "description": "The status of the token"
-          }
-        },
-        "required": [
-          "network"
-        ]
-      },
-      "Invoice": {
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-            "description": "The UUID of the invoice"
-          },
-          "user_uuid": {
-            "type": "string",
-            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-            "description": "The UUID of the user associated with the invoice"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "created",
-              "paid"
-            ],
-            "example": "created",
-            "description": "The status of the invoice"
-          },
-          "amount": {
-            "type": "number",
-            "example": 100,
-            "description": "The amount of the invoice"
-          },
-          "fee_amount": {
-            "type": "number",
-            "example": 5,
-            "description": "The fee amount for the invoice"
-          },
-          "token_address": {
-            "type": "string",
-            "example": "0xAbC123...",
-            "description": "The token address for the invoice"
-          },
-          "network": {
-            "type": "string",
-            "example": "ethereum",
-            "description": "The network of the transaction"
-          },
-          "client": {
-            "type": "string",
-            "example": "0xDeF456...",
-            "description": "The client wallet address"
-          },
-          "hash": {
-            "type": "string",
-            "example": "0xHash123...",
-            "description": "The transaction hash",
-            "nullable": true
-          },
-          "signature": {
-            "type": "string",
-            "example": "0xHash123...",
-            "description": "Transaction Signature",
-            "nullable": true
-          }
-        },
-        "required": [
-          "uuid",
-          "user_uuid",
-          "status",
-          "amount",
-          "fee_amount",
-          "token_address",
-          "network",
-          "client",
-          "hash",
-          "signature"
-        ]
-      },
-      "CreateInvoiceDto": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number",
-            "example": 100,
-            "description": "The amount of the invoice"
-          },
-          "token_address": {
-            "type": "string",
-            "example": "0x203fC64C12a51C48755Cf77CB63c2F0618657cFD",
-            "description": "The token address for the invoice"
-          },
-          "network": {
-            "type": "string",
-            "example": "ARB_SEPOLIA",
-            "description": "The network of the transaction"
-          }
-        },
-        "required": [
-          "amount",
-          "token_address",
-          "network"
-        ]
-      },
-      "UpdateInvoiceDto": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "created",
-              "paid"
-            ],
-            "example": "paid",
-            "description": "The status of the invoice"
-          }
-        },
-        "required": [
-          "status"
+          "channel_id",
+          "channel_title",
+          "user_uuid"
         ]
       }
     }
