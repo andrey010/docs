@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Paylora docs",
   "colors": {
-    "primary": "#16A34A",
+    "primary": "#12d39d",
     "light": "#07C983",
-    "dark": "#15803D"
+    "dark": "#12d39d"
   },
   "favicon": "/favicon.png",
   "navigation": {
@@ -25,13 +25,8 @@
             "group": "Tutorials",
             "pages": [
               "essentials/telegram",
-              "essentials/crypto_wallet"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/images"
+              "essentials/crypto_wallet",
+              "essentials/test_coins"
             ]
           }
         ]
