@@ -33,7 +33,7 @@
       },
       {
         "tab": "API reference",
-        "openapi": "./api-reference/swagger-spec.json"
+        "openapi": "https://api.paylora.org/api-doc-json"
         
       }
     ]

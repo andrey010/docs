@@ -6295,7 +6295,7 @@
   "tags": [],
   "servers": [
     {
-      "url": "https://192.168.0.178:3000/"
+      "url": "https://api.paylora.org"
     }
   ],
   "components": {
